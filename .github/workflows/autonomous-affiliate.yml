@@ -2,8 +2,8 @@ name: Autonomer Affiliate Content-Workflow
 
 on:
   schedule:
-    # Läuft täglich um 07:00 UTC (08:00/09:00 MEZ)
-    - cron: '0 7 * * *'
+    # Läuft täglich um 07:00 Uhr und 18:00 Uhr MEZ (06:00 & 17:00 UTC)
+    - cron: '0 6,17 * * *'
   workflow_dispatch:
     inputs:
       topic:

@@ -66,7 +66,7 @@ Amazon PartnerNet ist der einfachste und zuverlässigste Einstieg ins Affiliate-
 ## 4. Autonomen Cloud-Workflow starten & steuern
 
 ### Vollautomatischer Zeitplan
-Die Datei `.github/workflows/autonomous-affiliate.yml` startet automatisch **täglich um 07:00 UTC (08:00/09:00 MEZ)**:
+Die Datei `.github/workflows/autonomous-affiliate.yml` startet automatisch **täglich um 07:00 Uhr und 18:00 Uhr MEZ (06:00 & 17:00 UTC – 2 Artikel pro Tag)**:
 1. Gemini durchsucht aktuelle Long-Tail- und Vergleichs-Trends in Deutschland (oder wählt das nächste Thema aus `src/config/topic-queue.json`).
 2. Gemini schreibt einen neuen SEO-Vergleich mit 4–5 realen Amazon-Produkten, Vor-/Nachteilen, Preisen und FAQs.
 3. Automatisch werden ein Hero-Bild (`.svg`) **und ein vertikaler 1000×1500 Pinterest-Pin (`.png`)** erzeugt.

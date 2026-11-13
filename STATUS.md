@@ -32,7 +32,7 @@
    - `scripts/publish-github.mjs` (`npm run publish:github`) für den automatischen Upload via GitHub CLI (`gh`) eingerichtet.
 
 3. **Cloud-Workflows (`.github/workflows/` & `cloud/`):**
-   - `autonomous-affiliate.yml` (**täglich 07:00 UTC** + manueller Trigger + automatischer IndexNow-Ping)
+   - `autonomous-affiliate.yml` (**täglich 07:00 & 18:00 Uhr MEZ / 06:00 & 17:00 UTC** + manueller Trigger + automatischer IndexNow-Ping)
    - `deploy-pages.yml` (Automatisches Deployment auf GitHub Pages)
    - `cloud/Dockerfile` & `cloud/setup-gcp-scheduler.md` (optional für Google Cloud Run / Scheduler)
 
