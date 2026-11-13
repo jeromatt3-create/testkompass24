@@ -34,7 +34,7 @@
 
 ## Offene To-Dos beim Weitermachen
 
-- [x] **1. Rechtliches personalisieren:** `src/pages/impressum.astro` und `src/pages/datenschutz.astro` mit `Jeronimo Mattmüller, Max-Grothe-Str. 4, 04324 Leipzig, jeromatt3@gmail.com, Tel. 015754686543` ausgefüllt und neu gebaut.
+- [x] **1. Rechtliches personalisieren:** `src/pages/impressum.astro` und `src/pages/datenschutz.astro` mit `Jeronimo Mattmüller, Max-Grothe-Str. 4, 04324 Leipzig, vd1hz54pr@mozmail.com, Tel. 015754686543` ausgefüllt und neu gebaut.
 - [x] **2. Lokal ansehen:** Dev-Server läuft auf `http://localhost:4321/` und alle 5 Kategorien sind befüllt.
 - [x] **3. GitHub-Account anlegen & automatisch veröffentlichen:**
   - Repository live unter `https://github.com/jeromatt3-create/testkompass24`

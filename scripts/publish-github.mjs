@@ -168,6 +168,8 @@ async function main() {
   }
 
   const headCommitSha = refData.object.sha;
+  const headCommit = ghApi(ghBin, `repos/${fullRepo}/git/commits/${headCommitSha}`);
+  const baseTreeSha = headCommit?.tree?.sha;
 
   // 4. Secrets aus .env vor dem Push setzen, damit der push-Build direkt die neuesten Werte nutzt
   const geminiKey = process.env.GEMINI_API_KEY;
@@ -214,7 +216,7 @@ async function main() {
 
   const newTree = ghApi(ghBin, `repos/${fullRepo}/git/trees`, {
     method: 'POST',
-    body: { tree },
+    body: baseTreeSha ? { base_tree: baseTreeSha, tree } : { tree },
   });
 
   const newCommit = ghApi(ghBin, `repos/${fullRepo}/git/commits`, {
