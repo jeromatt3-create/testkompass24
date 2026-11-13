@@ -47,3 +47,19 @@
   - Live-Website unter `https://jeromatt3-create.github.io/testkompass24/`
 - [x] **4. Amazon PartnerNet einrichten:**
   - Tracking-ID `testkompass0a-21` in `.env`, Konfiguration, Workflows und GitHub Secrets aktiviert.
+
+---
+
+## Multi-Portal-Netzwerk (4 live laufende autonome Portale)
+
+Alle Portale nutzen gestaffelte Veröffentlichungszeiten (2× täglich MEZ), automatische `1000x1500` Pinterest-Pins (`/pinterest-rss.xml`), IndexNow-Pings und dasselbe rechtlich bereinigte Impressum (`vd1hz54pr@mozmail.com`):
+
+| Portal | Typ / Theme | Start-Artikel | Cron-Zeitplan (UTC -> MEZ) | Live-URL & Repository |
+|---|---|---|---|---|
+| **TestKompass24** | Affiliate-Produktvergleiche | 10 Artikel (5 Kategorien) | `0 6,17 * * *` (**07:00 & 18:00 Uhr**) | [testkompass24](https://jeromatt3-create.github.io/testkompass24/) ([Repo](https://github.com/jeromatt3-create/testkompass24)) |
+| **CleverRechner** | Finanzen, Steuern & Energie-Rechner (`fintech-modern`, Ad-Ready) | 5 Artikel (5 Kategorien) | `5 6,17 * * *` (**07:05 & 18:05 Uhr**) | [alltagsrechner](https://jeromatt3-create.github.io/alltagsrechner/) ([Repo](https://github.com/jeromatt3-create/alltagsrechner)) |
+| **FeierabendKüche** | 25-Minuten-Alltagsrezepte (`editorial-warm`, Ad-Ready) | 5 Artikel (5 Kategorien) | `10 6,17 * * *` (**07:10 & 18:10 Uhr**) | [feierabendkueche](https://jeromatt3-create.github.io/feierabendkueche/) ([Repo](https://github.com/jeromatt3-create/feierabendkueche)) |
+| **FehlercodeHeld** | Fehlercode-Diagnose-Datenbank (`tech-diagnostic`, Ad-Ready) | 5 Artikel (5 Kategorien) | `15 6,17 * * *` (**07:15 & 18:15 Uhr**) | [fehlercode-held](https://jeromatt3-create.github.io/fehlercode-held/) ([Repo](https://github.com/jeromatt3-create/fehlercode-held)) |
+
+- **Generator-Skripte (im Haupt-Workspace unter `scripts/`):** `ad-portal-data.mjs` & `scaffold-ad-portals.mjs` (erzeugt eigenständige Repositories unter `websites/<slug>`, durch `IGNORED_DIRS` vom `testkompass24`-Upload ausgeschlossen).
+- **Werbe-Aktivierung später:** In jedem Ad-Ready-Repository unter **Settings → Secrets and variables → Actions → Variables** die Variable `PUBLIC_ADSENSE_CLIENT` (`ca-pub-...`) setzen; ohne diese Variable bleiben `AdSlot.astro`-Container unsichtbar.

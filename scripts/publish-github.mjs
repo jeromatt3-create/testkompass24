@@ -14,7 +14,7 @@ const DEFAULT_GH_PATHS = [
   'gh',
 ];
 
-const IGNORED_DIRS = new Set(['node_modules', 'dist', '.astro', '.git']);
+const IGNORED_DIRS = new Set(['node_modules', 'dist', '.astro', '.git', 'websites']);
 const BINARY_EXTS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.ico', '.pdf', '.woff2']);
 
 function resolveGhBinary() {
