@@ -12,7 +12,7 @@ export function buildAmazonAffiliateUrl({
   partnerTag = '',
   preferDirectAsin = SITE_CONFIG.preferDirectAsin,
 } = {}) {
-  const tag = (partnerTag || SITE_CONFIG.amazonPartnerTag || 'dein-tag-21').trim();
+  const tag = (partnerTag || SITE_CONFIG.amazonPartnerTag || 'testkompass0a-21').trim();
   const marketplace = SITE_CONFIG.amazonMarketplace || 'www.amazon.de';
   const cleanAsin = typeof asin === 'string' ? asin.trim().toUpperCase() : '';
   const isValidAsin = /^[A-Z0-9]{10}$/.test(cleanAsin);

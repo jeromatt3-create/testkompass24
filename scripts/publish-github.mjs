@@ -169,7 +169,32 @@ async function main() {
 
   const headCommitSha = refData.object.sha;
 
-  // 4. Dateien als Git Tree hochladen
+  // 4. Secrets aus .env vor dem Push setzen, damit der push-Build direkt die neuesten Werte nutzt
+  const geminiKey = process.env.GEMINI_API_KEY;
+  if (geminiKey) {
+    runGh(ghBin, ['secret', 'set', 'GEMINI_API_KEY', '--repo', fullRepo], { input: geminiKey });
+    console.log('🔐 Secret GEMINI_API_KEY gespeichert.');
+  }
+  const partnerTag = process.env.AMAZON_PARTNER_TAG || 'testkompass0a-21';
+  runGh(ghBin, ['secret', 'set', 'AMAZON_PARTNER_TAG', '--repo', fullRepo], { input: partnerTag });
+  console.log(`🔐 Secret AMAZON_PARTNER_TAG (${partnerTag}) gespeichert.`);
+
+  // 5. GitHub Pages für GitHub Actions aktivieren
+  const pagesRes = ghApi(ghBin, `repos/${fullRepo}/pages`, {
+    method: 'POST',
+    body: { build_type: 'workflow' },
+    allowFail: true,
+  });
+  if (pagesRes?.error) {
+    ghApi(ghBin, `repos/${fullRepo}/pages`, {
+      method: 'PUT',
+      body: { build_type: 'workflow' },
+      allowFail: true,
+    });
+  }
+  console.log('🌐 GitHub Pages (Build via GitHub Actions) aktiviert.');
+
+  // 6. Dateien als Git Tree hochladen & main-Branch aktualisieren (löst deploy-pages.yml automatisch aus)
   console.log(`⬆️ Lade ${files.length} Projektdateien nach ${fullRepo} hoch...`);
   const tree = [];
   for (const file of files) {
@@ -206,34 +231,6 @@ async function main() {
     body: { sha: newCommit.sha, force: false },
   });
   console.log(`✅ Commit ${newCommit.sha.slice(0, 7)} auf main veröffentlicht.`);
-
-  // 5. GitHub Pages für GitHub Actions aktivieren
-  const pagesRes = ghApi(ghBin, `repos/${fullRepo}/pages`, {
-    method: 'POST',
-    body: { build_type: 'workflow' },
-    allowFail: true,
-  });
-  if (pagesRes?.error) {
-    ghApi(ghBin, `repos/${fullRepo}/pages`, {
-      method: 'PUT',
-      body: { build_type: 'workflow' },
-      allowFail: true,
-    });
-  }
-  console.log('🌐 GitHub Pages (Build via GitHub Actions) aktiviert.');
-
-  // 6. Secrets aus .env setzen
-  const geminiKey = process.env.GEMINI_API_KEY;
-  if (geminiKey) {
-    runGh(ghBin, ['secret', 'set', 'GEMINI_API_KEY', '--repo', fullRepo], { input: geminiKey });
-    console.log('🔐 Secret GEMINI_API_KEY gespeichert.');
-  }
-  const partnerTag = process.env.AMAZON_PARTNER_TAG || 'dein-tag-21';
-  runGh(ghBin, ['secret', 'set', 'AMAZON_PARTNER_TAG', '--repo', fullRepo], { input: partnerTag });
-  console.log(`🔐 Secret AMAZON_PARTNER_TAG (${partnerTag}) gespeichert.`);
-
-  // 7. Deployment-Workflow explizit anstoßen
-  runGh(ghBin, ['workflow', 'run', 'deploy-pages.yml', '--repo', fullRepo], { allowFail: true });
 
   const liveUrl = `https://${owner}.github.io/${opts.repo}/`;
   console.log('\n🎉 Fertig! Dein Repository und Live-Portal werden jetzt automatisch gebaut:');

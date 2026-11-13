@@ -39,7 +39,7 @@ jobs:
 
       - name: Astro Website bauen
         env:
-          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG || 'dein-tag-21' }}
+          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG || 'testkompass0a-21' }}
           SITE_NAME: ${{ vars.SITE_NAME || 'TestKompass24' }}
           SITE_URL: ${{ vars.SITE_URL || steps.pages.outputs.origin }}
           BASE_PATH: ${{ vars.BASE_PATH || steps.pages.outputs.base_path || '/' }}

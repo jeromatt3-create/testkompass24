@@ -36,9 +36,8 @@
 
 - [x] **1. Rechtliches personalisieren:** `src/pages/impressum.astro` und `src/pages/datenschutz.astro` mit `Jeronimo Mattmüller, Herbartstr. 1, 04318 Leipzig, jeromatt3@gmail.com` ausgefüllt und neu gebaut.
 - [x] **2. Lokal ansehen:** Dev-Server läuft auf `http://localhost:4321/` und alle 5 Kategorien sind befüllt.
-- [ ] **3. GitHub-Account anlegen & automatisch veröffentlichen:**
-  - Kostenlosen GitHub-Account unter `https://github.com/signup` mit `jeromatt3@gmail.com` erstellen.
-  - Einmalig mit `gh auth login --web --git-protocol https --scopes repo,workflow` anmelden und `npm run publish:github` ausführen.
-- [ ] **4. Amazon PartnerNet einrichten:**
-  - Die fertige Live-URL (`https://<github-name>.github.io/testkompass24/`) im linken Website-Feld bei `partnernet.amazon.de` eintragen (rechtes App-Feld leer lassen).
-  - Erhaltene Tracking-ID (z. B. `deinname-21`) in `.env` und als GitHub Secret `AMAZON_PARTNER_TAG` eintragen.
+- [x] **3. GitHub-Account anlegen & automatisch veröffentlichen:**
+  - Repository live unter `https://github.com/jeromatt3-create/testkompass24`
+  - Live-Website unter `https://jeromatt3-create.github.io/testkompass24/`
+- [x] **4. Amazon PartnerNet einrichten:**
+  - Tracking-ID `testkompass0a-21` in `.env`, Konfiguration, Workflows und GitHub Secrets aktiviert.

@@ -5,7 +5,7 @@ export const SITE_CONFIG = {
   tagline: 'Unabhängige Produktvergleiche, Kaufberatung & Preis-Checks',
   description:
     'Aktuelle Produktvergleiche, datenbasierte Kaufberatungen und Preis-Leistungs-Checks für Tech, Haushalt, Smart Home, Audio und Alltag.',
-  amazonPartnerTag: env.AMAZON_PARTNER_TAG || 'dein-tag-21',
+  amazonPartnerTag: env.AMAZON_PARTNER_TAG || 'testkompass0a-21',
   amazonMarketplace: 'www.amazon.de',
   preferDirectAsin: false,
   categories: {
