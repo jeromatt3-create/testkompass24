@@ -1,0 +1,221 @@
+[
+  {
+    "id": "powerbank-usb-c-schnellladen",
+    "category": "tech-gadgets",
+    "keyword": "Beste Powerbank mit USB-C Schnellladen 20000 mAh Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "published",
+    "publishedAt": "2026-11-13T20:35:11.293Z"
+  },
+  {
+    "id": "gan-usb-c-ladegeraet-mehrfach",
+    "category": "tech-gadgets",
+    "keyword": "GaN USB-C Ladegerät 65W bis 100W Vergleich für Laptop & Smartphone",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "externe-ssd-festplatte-usb-c",
+    "category": "tech-gadgets",
+    "keyword": "Schnelle externe SSD 1TB & 2TB Vergleich für Mac, PC und Konsole",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "e-book-reader-vergleich",
+    "category": "tech-gadgets",
+    "keyword": "E-Book-Reader Vergleich: Kindle, Kobo & Tolino im Check",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "webcam-homeoffice-4k",
+    "category": "tech-gadgets",
+    "keyword": "Beste Webcam für Homeoffice & Streaming im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "wlan-mesh-system-vergleich",
+    "category": "tech-gadgets",
+    "keyword": "WLAN Mesh System Vergleich für große Wohnungen & Häuser",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "kaffeevollautomat-preis-leistung",
+    "category": "haushalt-kueche",
+    "keyword": "Bester Kaffeevollautomat unter 500 Euro im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "published",
+    "publishedAt": "2026-11-13T19:08:16.604Z"
+  },
+  {
+    "id": "akku-staubsauger-tierhaare",
+    "category": "haushalt-kueche",
+    "keyword": "Akku-Staubsauger Vergleich: Starke Saugkraft gegen Tierhaare",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "siebtraegermaschine-einsteiger",
+    "category": "haushalt-kueche",
+    "keyword": "Siebträgermaschine für Einsteiger mit Mahlwerk im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "wasserkocher-temperatureinstellung",
+    "category": "haushalt-kueche",
+    "keyword": "Edelstahl Wasserkocher mit Temperatureinstellung Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "standmixer-smoothie-maker",
+    "category": "haushalt-kueche",
+    "keyword": "Hochleistungs-Standmixer & Smoothie Maker im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "elektrische-zahnbuerste-vergleich",
+    "category": "haushalt-kueche",
+    "keyword": "Elektrische Zahnbürste Vergleich: Schall vs. Oszillierend",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "smarte-heizkoerperthermostate",
+    "category": "smart-home",
+    "keyword": "Smarte Heizkörperthermostate im Vergleich (Heizkosten sparen)",
+    "intent": "commercial",
+    "seasonality": "Herbst/Winter",
+    "status": "pending"
+  },
+  {
+    "id": "ueberwachungskamera-aussen-akku",
+    "category": "smart-home",
+    "keyword": "WLAN Überwachungskamera Außen mit Akku & ohne Abo Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "luftreiniger-allergiker-hepa",
+    "category": "smart-home",
+    "keyword": "Luftreiniger für Allergiker mit HEPA-Filter im Vergleich",
+    "intent": "commercial",
+    "seasonality": "Frühling/ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "video-tuerklingel-ohne-abo",
+    "category": "smart-home",
+    "keyword": "Smarte Video-Türklingel ohne monatliches Abo im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "balkonkraftwerk-speicher-komplettset",
+    "category": "smart-home",
+    "keyword": "Balkonkraftwerk 800W Komplettset mit Mikrowechselrichter Vergleich",
+    "intent": "commercial",
+    "seasonality": "Frühling/Sommer",
+    "status": "pending"
+  },
+  {
+    "id": "in-ear-kopfhoerer-anc-vergleich",
+    "category": "gaming-audio",
+    "keyword": "Beste In-Ear Bluetooth Kopfhörer mit ANC unter 150 Euro",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "gaming-monitor-27-zoll-wqhd",
+    "category": "gaming-audio",
+    "keyword": "27 Zoll WQHD Gaming-Monitor 144Hz+ Preis-Leistungs-Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "usb-mikrofon-podcast-streaming",
+    "category": "gaming-audio",
+    "keyword": "Bestes USB-Mikrofon für Podcast, Homeoffice & Gaming im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "soundbar-mit-subwoofer-vergleich",
+    "category": "gaming-audio",
+    "keyword": "Soundbar mit Subwoofer für TV unter 300 Euro im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "mechanische-gaming-tastatur",
+    "category": "gaming-audio",
+    "keyword": "Mechanische Tastatur kabellos für Gaming & Büro im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "smartwatch-fitness-tracker-vergleich",
+    "category": "outdoor-fitness",
+    "keyword": "Fitness-Tracker & Sport-Smartwatch Vergleich unter 200 Euro",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "massagepistole-regeneration-vergleich",
+    "category": "outdoor-fitness",
+    "keyword": "Beste Massagepistole für Nacken & Sport-Regeneration im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "walking-pad-laufband-homeoffice",
+    "category": "outdoor-fitness",
+    "keyword": "Walking Pad Laufband klappbar fürs Homeoffice im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "published",
+    "publishedAt": "2026-11-13T20:36:38.225Z"
+  },
+  {
+    "id": "fahrradschloss-sicherheitsstufe",
+    "category": "outdoor-fitness",
+    "keyword": "Sicheres Fahrradschloss für E-Bikes im Vergleich (Bügel & Faltschloss)",
+    "intent": "commercial",
+    "seasonality": "Frühling/Sommer",
+    "status": "pending"
+  },
+  {
+    "id": "powerstation-camping-notstrom",
+    "category": "outdoor-fitness",
+    "keyword": "Tragbare Powerstation LiFePO4 für Camping & Notstrom Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  }
+]

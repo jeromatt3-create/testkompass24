@@ -1,0 +1,124 @@
+---
+import { SITE_CONFIG, getCategoryList } from '../config/site.config.mjs';
+import { withBase } from '../utils/url.js';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title = `${SITE_CONFIG.name} – ${SITE_CONFIG.tagline}`,
+  description = SITE_CONFIG.description,
+  canonicalPath = Astro.url.pathname,
+  jsonLd,
+} = Astro.props;
+
+const categories = getCategoryList();
+const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/+$/, '') : '';
+const canonicalUrl = siteOrigin ? `${siteOrigin}${canonicalPath}` : canonicalPath;
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    {
+      jsonLd && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(jsonLd)}
+        />
+      )
+    }
+  </head>
+  <body>
+    <div class="top-disclosure">
+      Transparenz-Hinweis: Mit * markierte Links sind Affiliate-Links (z. B. Amazon PartnerNet). Bei Kauf erhalten wir eine Provision – für dich bleibt der Preis gleich.
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href={withBase('/')} class="brand">
+          <span class="brand-mark">✓</span>
+          <span>{SITE_CONFIG.name}</span>
+        </a>
+
+        <nav class="main-nav" aria-label="Kategorien">
+          {
+            categories.map((cat) => (
+              <a href={withBase(`/kategorie/${cat.slug}/`)} class="nav-link">
+                {cat.icon} {cat.name}
+              </a>
+            ))
+          }
+          <a href={withBase('/ueber-uns/')} class="nav-link">Methodik</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div>
+            <h4>{SITE_CONFIG.name}</h4>
+            <p style="font-size: 0.9rem; color: #94a3b8; margin: 0;">
+              {SITE_CONFIG.tagline}. Wir analysieren technische Daten, Kundenbewertungen
+              und aktuelle Preis-Leistungs-Verhältnisse für kluge Kaufentscheidungen.
+            </p>
+          </div>
+          <div>
+            <h4>Kategorien</h4>
+            <ul class="footer-links">
+              {
+                categories.map((cat) => (
+                  <li>
+                    <a href={withBase(`/kategorie/${cat.slug}/`)}>
+                      {cat.icon} {cat.name}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <div>
+            <h4>Rechtliches & Transparenz</h4>
+            <ul class="footer-links">
+              <li><a href={withBase('/ueber-uns/')}>Über uns & Methodik</a></li>
+              <li><a href={withBase('/impressum/')}>Impressum</a></li>
+              <li><a href={withBase('/datenschutz/')}>Datenschutz</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div>
+            <strong>Affiliate-Hinweis:</strong> Als Amazon-Partner verdienen wir an qualifizierten Verkäufen.
+            Preise und Verfügbarkeit können sich seit der letzten Aktualisierung geändert haben.
+          </div>
+          <div>
+            © {currentYear} {SITE_CONFIG.name}. Alle Angaben ohne Gewähr.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

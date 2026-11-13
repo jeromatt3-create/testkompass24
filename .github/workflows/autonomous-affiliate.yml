@@ -1,0 +1,110 @@
+name: Autonomer Affiliate Content-Workflow
+
+on:
+  schedule:
+    # Läuft jeden Montag, Mittwoch und Freitag um 07:00 UTC (08:00/09:00 MEZ)
+    - cron: '0 7 * * 1,3,5'
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Optional: Spezifisches Thema (leer = KI wählt aktuellen Trend)'
+        required: false
+        default: ''
+        type: string
+      category:
+        description: 'Optional: Kategorie (leer = KI wählt automatisch)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - tech-gadgets
+          - haushalt-kueche
+          - smart-home
+          - gaming-audio
+          - outdoor-fitness
+      count:
+        description: 'Anzahl neuer Artikel pro Lauf (1-5)'
+        required: false
+        default: '1'
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-and-content
+  cancel-in-progress: false
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Autonome Gemini Trend-Recherche & Artikelerstellung
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-flash-latest' }}
+          USE_SEARCH_GROUNDING: ${{ vars.USE_SEARCH_GROUNDING || 'true' }}
+          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG || 'dein-tag-21' }}
+          INPUT_TOPIC: ${{ github.event.inputs.topic || '' }}
+          INPUT_CATEGORY: ${{ github.event.inputs.category || '' }}
+          INPUT_COUNT: ${{ github.event.inputs.count || '1' }}
+        run: |
+          ARGS=("--count=${INPUT_COUNT}")
+          if [ -n "$INPUT_TOPIC" ]; then
+            ARGS+=("--topic=${INPUT_TOPIC}")
+          fi
+          if [ -n "$INPUT_CATEGORY" ]; then
+            ARGS+=("--category=${INPUT_CATEGORY}")
+          fi
+          node scripts/run-pipeline.mjs "${ARGS[@]}"
+
+      - name: Neue Artikel ins Repository committen
+        run: |
+          git config user.name "Affiliate-Bot"
+          git config user.email "affiliate-bot@users.noreply.github.com"
+          git add src/content/articles/ public/images/articles/ src/config/topic-queue.json
+          if git diff --staged --quiet; then
+            echo "Keine neuen Artikeländerungen."
+          else
+            git commit -m "chore(content): neue Affiliate-Vergleiche automatisch veröffentlicht"
+            git push
+          fi
+
+      - name: GitHub Pages konfigurieren
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Astro Website bauen
+        env:
+          AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG || 'dein-tag-21' }}
+          SITE_NAME: ${{ vars.SITE_NAME || 'TestKompass24' }}
+          SITE_URL: ${{ vars.SITE_URL || steps.pages.outputs.origin }}
+          BASE_PATH: ${{ vars.BASE_PATH || steps.pages.outputs.base_path || '/' }}
+        run: npm run build
+
+      - name: GitHub Pages Artifact hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+      - name: Auf GitHub Pages veröffentlichen
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,217 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG, getCategoryList, getCategoryBySlug } from '../config/site.config.mjs';
+import { buildAmazonAffiliateUrl } from '../utils/affiliate.js';
+import { withBase } from '../utils/url.js';
+
+const allArticles = await getCollection('articles');
+const articles = allArticles.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const categories = getCategoryList();
+
+// Die jeweils bestplatzierten Empfehlungen aus den neuesten Artikeln
+const topPicks = articles
+  .filter((article) => article.data.products && article.data.products.length > 0)
+  .slice(0, 4)
+  .map((article) => ({
+    articleTitle: article.data.title,
+    articleSlug: article.id,
+    category: getCategoryBySlug(article.data.category),
+    product: [...article.data.products].sort((a, b) => a.rank - b.rank)[0],
+  }));
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-badge">Aktuelle Produktvergleiche {new Date().getFullYear()}</span>
+        <h1>Die besten Produkte im ehrlichen Vergleich – schneller zur richtigen Wahl</h1>
+        <p>
+          Wir filtern täglich Bestseller, technische Spezifikationen und echte Käufererfahrungen,
+          damit du nicht stundenlang Bewertungen vergleichen musst.
+        </p>
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="#neueste-vergleiche" class="btn-amazon">Aktuelle Vergleiche entdecken ↓</a>
+          <a
+            href={withBase('/ueber-uns/')}
+            class="btn-secondary"
+            style="background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.28);"
+          >
+            Unsere Vergleichsmethodik
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat-item">
+          <span class="hero-stat-icon">🔍</span>
+          <div>
+            <strong>Datenbasierte Vorauswahl</strong>
+            <div style="font-size: 0.88rem; color: #cbd5e1;">
+              Nur Modelle mit starkem Preis-Leistungs-Verhältnis und hoher Kundenzufriedenheit.
+            </div>
+          </div>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-icon">⚖️</span>
+          <div>
+            <strong>Klare Vor- &amp; Nachteile</strong>
+            <div style="font-size: 0.88rem; color: #cbd5e1;">
+              Kompakte Vergleichstabellen plus konkrete Schwächen zu jedem Produkt.
+            </div>
+          </div>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-icon">💶</span>
+          <div>
+            <strong>100 % kostenlos &amp; transparent</strong>
+            <div style="font-size: 0.88rem; color: #cbd5e1;">
+              Finanziert über Partnerlinks – ohne Aufpreis für dich.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Nach Kategorie stöbern</h2>
+        <span style="color: var(--text-muted); font-size: 0.92rem;">
+          {articles.length} veröffentlichte Ratgeber in {categories.length} Themenwelten
+        </span>
+      </div>
+
+      <div class="category-grid">
+        {
+          categories.map((cat) => (
+            <a href={withBase(`/kategorie/${cat.slug}/`)} class="category-card">
+              <span class="category-icon">{cat.icon}</span>
+              <h3>{cat.name}</h3>
+              <p>{cat.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    topPicks.length > 0 && (
+      <section class="section" style="background: var(--surface-alt); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="container">
+          <div class="section-header">
+            <h2>Aktuelle Vergleichssieger der Redaktion</h2>
+          </div>
+
+          <div class="articles-grid">
+            {topPicks.map(({ articleSlug, category, product }) => {
+              const url = buildAmazonAffiliateUrl({
+                asin: product.asin,
+                searchQuery: product.searchQuery,
+              });
+              return (
+                <div class="product-card is-rank-1" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.65rem;">
+                      <span class="badge-pill badge-winner">{product.badge}</span>
+                      <span style="font-size: 0.8rem; color: var(--text-muted);">
+                        {category.icon} {category.name}
+                      </span>
+                    </div>
+                    <h3 style="margin: 0 0 0.4rem; font-size: 1.15rem;">{product.name}</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0 0 0.85rem;">
+                      {product.highlight}
+                    </p>
+                  </div>
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                      <span class="rating-stars">★ {product.rating.toFixed(1)} / 5</span>
+                      <span style="font-weight: 700;">{product.priceRange}</span>
+                    </div>
+                    <div style="display: grid; gap: 0.5rem;">
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="nofollow sponsored noopener"
+                        class="btn-amazon"
+                        style="width: 100%;"
+                      >
+                        Bei Amazon.de prüfen*
+                      </a>
+                      <a
+                        href={withBase(`/artikel/${articleSlug}/`)}
+                        class="btn-secondary"
+                        style="width: 100%;"
+                      >
+                        Zum vollständigen Vergleich
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" id="neueste-vergleiche">
+    <div class="container">
+      <div class="section-header">
+        <h2>Neueste Produktvergleiche &amp; Kaufberatungen</h2>
+      </div>
+
+      <div class="articles-grid">
+        {
+          articles.map((article) => {
+            const category = getCategoryBySlug(article.data.category);
+            const dateStr = article.data.pubDate.toLocaleDateString('de-DE', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            });
+            return (
+              <article class="article-card">
+                <a href={withBase(`/artikel/${article.id}/`)} class="article-card-media">
+                  {article.data.heroImage ? (
+                    <img
+                      src={withBase(article.data.heroImage)}
+                      alt={article.data.title}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">
+                      {category.icon}
+                    </div>
+                  )}
+                </a>
+                <div class="article-card-body">
+                  <div class="article-meta-row">
+                    <span class="cat-tag">
+                      {category.icon} {category.name}
+                    </span>
+                    <span>{dateStr}</span>
+                  </div>
+                  <h3>
+                    <a href={withBase(`/artikel/${article.id}/`)}>{article.data.title}</a>
+                  </h3>
+                  <p>{article.data.description}</p>
+                  <div class="article-card-footer">
+                    <span>{article.data.products.length} Modelle verglichen</span>
+                    <a href={withBase(`/artikel/${article.id}/`)}>Vergleich lesen →</a>
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

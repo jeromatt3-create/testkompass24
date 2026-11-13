@@ -1,0 +1,107 @@
+---
+import { buildAmazonAffiliateUrl } from '../utils/affiliate.js';
+
+interface Product {
+  rank: number;
+  name: string;
+  badge: string;
+  rating: number;
+  priceRange: string;
+  searchQuery: string;
+  asin?: string;
+  highlight: string;
+  specs: string[];
+}
+
+interface Props {
+  products: Product[];
+  title?: string;
+}
+
+const { products = [], title = 'Schnellvergleich: Die Top-Empfehlungen im Überblick' } = Astro.props;
+
+const sorted = [...products].sort((a, b) => a.rank - b.rank);
+
+function getBadgeClass(badge: string, rank: number) {
+  const lower = badge.toLowerCase();
+  if (rank === 1 || lower.includes('testsieger')) return 'badge-pill badge-winner';
+  if (lower.includes('preis') || lower.includes('tipp')) return 'badge-pill badge-value';
+  return 'badge-pill badge-default';
+}
+---
+
+{
+  sorted.length > 0 && (
+    <section class="comparison-wrap" id="vergleichstabelle" aria-label="Produktvergleich">
+      <div class="comparison-head">
+        <h2>{title}</h2>
+        <span style="font-size: 0.82rem; opacity: 0.9;">
+          Preise inkl. MwSt., ggf. zzgl. Versand*
+        </span>
+      </div>
+      <div class="table-scroll">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Platz</th>
+              <th>Produkt &amp; Auszeichnung</th>
+              <th>Ideal für</th>
+              <th>Bewertung</th>
+              <th>Preisbereich</th>
+              <th>Angebot</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              sorted.map((product) => {
+                const url = buildAmazonAffiliateUrl({
+                  asin: product.asin,
+                  searchQuery: product.searchQuery,
+                });
+                return (
+                  <tr class={product.rank === 1 ? 'is-winner' : ''}>
+                    <td>
+                      <strong>#{product.rank}</strong>
+                    </td>
+                    <td>
+                      <div style="margin-bottom: 0.25rem;">
+                        <span class={getBadgeClass(product.badge, product.rank)}>
+                          {product.badge}
+                        </span>
+                      </div>
+                      <a
+                        href={`#produkt-${product.rank}`}
+                        style="font-weight: 700; color: var(--text);"
+                      >
+                        {product.name}
+                      </a>
+                    </td>
+                    <td style="max-width: 240px; font-size: 0.86rem; color: var(--text-muted);">
+                      {product.highlight}
+                    </td>
+                    <td>
+                      <span class="rating-stars">★ {product.rating.toFixed(1)}</span>
+                      <span style="font-size: 0.78rem; color: var(--text-muted);"> / 5</span>
+                    </td>
+                    <td style="font-weight: 600; white-space: nowrap;">{product.priceRange}</td>
+                    <td>
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="nofollow sponsored noopener"
+                        class="btn-amazon"
+                        style="padding: 0.5rem 0.9rem; font-size: 0.86rem;"
+                      >
+                        Bei Amazon prüfen*
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )
+}

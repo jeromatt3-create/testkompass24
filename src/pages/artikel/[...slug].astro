@@ -1,0 +1,137 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AffiliateNotice from '../../components/AffiliateNotice.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import { getCategoryBySlug } from '../../config/site.config.mjs';
+import { withBase } from '../../utils/url.js';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const category = getCategoryBySlug(entry.data.category);
+const sortedProducts = [...(entry.data.products || [])].sort((a, b) => a.rank - b.rank);
+
+const pubDateStr = entry.data.pubDate.toLocaleDateString('de-DE', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+const updatedDate = entry.data.updatedDate || entry.data.pubDate;
+
+const jsonLd: Array<Record<string, unknown>> = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: entry.data.title,
+    description: entry.data.description,
+    datePublished: entry.data.pubDate.toISOString(),
+    dateModified: updatedDate.toISOString(),
+    inLanguage: 'de-DE',
+  },
+];
+
+if (sortedProducts.length > 0) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: entry.data.title,
+    itemListElement: sortedProducts.map((p) => ({
+      '@type': 'ListItem',
+      position: p.rank,
+      name: p.name,
+    })),
+  });
+}
+
+if (entry.data.faqs && entry.data.faqs.length > 0) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: entry.data.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  });
+}
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  jsonLd={jsonLd}
+>
+  <div class="container article-layout">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href={withBase('/')}>Startseite</a>
+      <span>›</span>
+      <a href={withBase(`/kategorie/${category.slug}/`)}>
+        {category.icon} {category.name}
+      </a>
+      <span>›</span>
+      <span>{entry.data.title}</span>
+    </nav>
+
+    <header class="article-header">
+      <span class="cat-tag">{category.icon} {category.name}</span>
+      <h1>{entry.data.title}</h1>
+      <p style="font-size: 1.08rem; color: var(--text-muted); margin: 0 0 1rem;">
+        {entry.data.description}
+      </p>
+
+      {
+        entry.data.heroImage && (
+          <div style="margin: 1rem 0 1.25rem; border-radius: 10px; overflow: hidden; border: 1px solid var(--border);">
+            <img src={withBase(entry.data.heroImage)} alt={entry.data.title} />
+          </div>
+        )
+      }
+
+      <div class="article-byline">
+        <span>📅 Veröffentlicht: {pubDateStr}</span>
+        <span>⏱️ Lesezeit: ca. {entry.data.readingTime || 7} Min.</span>
+        <span>🏆 {sortedProducts.length} Produkte im Vergleich</span>
+      </div>
+    </header>
+
+    <AffiliateNotice updatedDate={updatedDate} />
+
+    {
+      sortedProducts.length > 0 && (
+        <ComparisonTable products={sortedProducts} />
+      )
+    }
+
+    {
+      sortedProducts.length > 0 && (
+        <section id="einzelvorstellungen" style="margin-bottom: 2.25rem;">
+          <h2 style="font-size: 1.55rem; margin-bottom: 1rem;">
+            Die besten Modelle im Detail-Check
+          </h2>
+          {sortedProducts.map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </section>
+      )
+    }
+
+    <section class="prose" id="kaufberatung">
+      <Content />
+    </section>
+
+    <FaqSection faqs={entry.data.faqs || []} />
+  </div>
+</BaseLayout>

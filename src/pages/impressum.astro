@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site.config.mjs';
+---
+
+<BaseLayout title={`Impressum | ${SITE_CONFIG.name}`}>
+  <div class="container article-layout">
+    <div class="prose">
+      <h1>Impressum</h1>
+      <p><strong>Angaben gemäß § 5 DDG (Digitale-Dienste-Gesetz)</strong></p>
+      <p>
+        <strong>Jeronimo Mattmüller</strong><br />
+        Herbartstr. 1<br />
+        04318 Leipzig<br />
+        Deutschland
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        E-Mail: <a href="mailto:jeromatt3@gmail.com">jeromatt3@gmail.com</a>
+      </p>
+
+      <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+      <p>
+        Jeronimo Mattmüller, Anschrift wie oben.
+      </p>
+
+      <h2>Hinweis zu Affiliate-Links (Amazon PartnerNet)</h2>
+      <p>
+        {SITE_CONFIG.name} ist Teilnehmer des Partnerprogramms von Amazon EU, das zur Bereitstellung
+        eines Mediums für Webseiten konzipiert wurde, mittels dessen durch die Platzierung von
+        Werbeanzeigen und Links zu Amazon.de Werbekostenerstattung verdient werden kann.
+        Mit <strong>*</strong> gekennzeichnete Links sind sogenannte Affiliate-Links. Kommt über
+        einen solchen Link ein Einkauf zustande, erhalten wir eine Provision. Für dich entstehen
+        dadurch keine zusätzlichen Kosten.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

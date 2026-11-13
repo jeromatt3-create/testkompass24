@@ -1,0 +1,18 @@
+---
+interface Props {
+  updatedDate?: Date;
+}
+
+const { updatedDate } = Astro.props;
+const formattedDate = updatedDate
+  ? updatedDate.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })
+  : null;
+---
+
+<aside class="affiliate-notice" aria-label="Transparenzhinweis">
+  <strong>Transparenz &amp; Unabhängigkeit:</strong> Unsere Vergleiche werden redaktionell anhand von
+  Herstellerdaten, Praxisberichten und verifizierten Käuferbewertungen erstellt. Wenn du über die
+  mit <strong>*</strong> gekennzeichneten Links auf Amazon.de einkaufst, erhalten wir eine kleine
+  Provision – für dich entstehen dadurch <strong>keine Mehrkosten</strong>.
+  {formattedDate && <span> Stand der Recherche: {formattedDate}.</span>}
+</aside>

@@ -1,0 +1,103 @@
+---
+import { buildAmazonAffiliateUrl } from '../utils/affiliate.js';
+
+interface Product {
+  rank: number;
+  name: string;
+  badge: string;
+  rating: number;
+  priceRange: string;
+  searchQuery: string;
+  asin?: string;
+  highlight: string;
+  specs: string[];
+  pros: string[];
+  cons: string[];
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const affiliateUrl = buildAmazonAffiliateUrl({
+  asin: product.asin,
+  searchQuery: product.searchQuery,
+});
+
+const badgeClass =
+  product.rank === 1 || product.badge.toLowerCase().includes('testsieger')
+    ? 'badge-pill badge-winner'
+    : product.badge.toLowerCase().includes('preis')
+      ? 'badge-pill badge-value'
+      : 'badge-pill badge-default';
+---
+
+<article
+  id={`produkt-${product.rank}`}
+  class={`product-card ${product.rank === 1 ? 'is-rank-1' : ''}`}
+>
+  <div class="product-card-top">
+    <div class="product-rank-title">
+      <span class="rank-circle">{product.rank}</span>
+      <div>
+        <span class={badgeClass} style="margin-bottom: 0.25rem;">
+          {product.badge}
+        </span>
+        <h3>{product.name}</h3>
+      </div>
+    </div>
+
+    <div style="text-align: right;">
+      <div class="rating-stars">★ {product.rating.toFixed(1)} / 5.0</div>
+      <div style="font-size: 0.8rem; color: var(--text-muted);">Redaktionswertung</div>
+    </div>
+  </div>
+
+  <p style="margin: 0 0 0.75rem; font-size: 0.98rem;">
+    <strong>Kurz-Fazit:</strong> {product.highlight}
+  </p>
+
+  {
+    product.specs && product.specs.length > 0 && (
+      <div class="specs-row" aria-label="Technische Eckdaten">
+        {product.specs.map((spec) => (
+          <span class="spec-chip">{spec}</span>
+        ))}
+      </div>
+    )
+  }
+
+  <div class="pros-cons-grid">
+    <div class="pros-box">
+      <h4>✓ Vorteile</h4>
+      <ul>
+        {product.pros.map((pro) => <li>{pro}</li>)}
+      </ul>
+    </div>
+    <div class="cons-box">
+      <h4>✕ Nachteile</h4>
+      <ul>
+        {product.cons.map((con) => <li>{con}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="product-card-actions">
+    <div>
+      <span style="font-size: 0.82rem; color: var(--text-muted); display: block;">
+        Orientierungspreis
+      </span>
+      <span class="price-tag">{product.priceRange}</span>
+    </div>
+
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel="nofollow sponsored noopener"
+      class="btn-amazon"
+    >
+      Aktuellen Preis auf Amazon.de prüfen* →
+    </a>
+  </div>
+</article>

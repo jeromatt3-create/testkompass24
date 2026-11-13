@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCategoryList, getCategoryBySlug, SITE_CONFIG } from '../../config/site.config.mjs';
+import { withBase } from '../../utils/url.js';
+
+export async function getStaticPaths() {
+  return getCategoryList().map((cat) => ({
+    params: { category: cat.slug },
+    props: { category: cat },
+  }));
+}
+
+const { category } = Astro.props;
+const allArticles = await getCollection('articles');
+const categoryArticles = allArticles
+  .filter((a) => a.data.category === category.slug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`${category.name} – Vergleiche & Kaufberatung | ${SITE_CONFIG.name}`}
+  description={category.description}
+>
+  <section class="hero" style="padding: 2.4rem 0;">
+    <div class="container">
+      <nav class="breadcrumbs" style="color: #cbd5e1;">
+        <a href={withBase('/')} style="color: #fff;">Startseite</a>
+        <span>›</span>
+        <span>{category.name}</span>
+      </nav>
+      <h1 style="margin-bottom: 0.5rem;">
+        {category.icon} {category.name}
+      </h1>
+      <p style="margin: 0; max-width: 700px;">{category.description}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {
+        categoryArticles.length === 0 ? (
+          <div class="prose" style="text-align: center;">
+            <h2>Noch keine Artikel in dieser Kategorie</h2>
+            <p>
+              Die autonome KI-Pipeline füllt diese Kategorie bei den nächsten Läufen automatisch,
+              oder du startest direkt lokal: <code>npm run pipeline -- --category={category.slug}</code>
+            </p>
+            <a href={withBase('/')} class="btn-secondary">Zurück zur Startseite</a>
+          </div>
+        ) : (
+          <div class="articles-grid">
+            {categoryArticles.map((article) => {
+              const catInfo = getCategoryBySlug(article.data.category);
+              const dateStr = article.data.pubDate.toLocaleDateString('de-DE', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              });
+              return (
+                <article class="article-card">
+                  <a href={withBase(`/artikel/${article.id}/`)} class="article-card-media">
+                    {article.data.heroImage ? (
+                      <img
+                        src={withBase(article.data.heroImage)}
+                        alt={article.data.title}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">
+                        {catInfo.icon}
+                      </div>
+                    )}
+                  </a>
+                  <div class="article-card-body">
+                    <div class="article-meta-row">
+                      <span class="cat-tag">{catInfo.icon} {catInfo.name}</span>
+                      <span>{dateStr}</span>
+                    </div>
+                    <h3>
+                      <a href={withBase(`/artikel/${article.id}/`)}>{article.data.title}</a>
+                    </h3>
+                    <p>{article.data.description}</p>
+                    <div class="article-card-footer">
+                      <span>{article.data.products.length} Modelle verglichen</span>
+                      <a href={withBase(`/artikel/${article.id}/`)}>Vergleich lesen →</a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

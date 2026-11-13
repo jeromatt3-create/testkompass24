@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site.config.mjs';
+---
+
+<BaseLayout title={`Über uns & Vergleichsmethodik | ${SITE_CONFIG.name}`}>
+  <div class="container article-layout">
+    <div class="prose">
+      <h1>Über {SITE_CONFIG.name} &amp; unsere Methodik</h1>
+      <p>
+        {SITE_CONFIG.name} hilft Verbraucherinnen und Verbrauchern im deutschsprachigen Raum dabei,
+        aus der Masse an Online-Angeboten schnell das passende Produkt für den eigenen Bedarf und
+        das eigene Budget zu finden.
+      </p>
+
+      <h2>Wie entstehen unsere Produktvergleiche?</h2>
+      <p>
+        Unsere Redaktion kombiniert strukturierte Marktrecherchen mit technischen Datenblättern und
+        langfristigen Käufererfahrungen:
+      </p>
+      <ul>
+        <li>
+          <strong>Bedarfsanalyse:</strong> Wir ermitteln aktuelle Kaufkriterien und typische
+          Schwachstellen in der jeweiligen Produktkategorie.
+        </li>
+        <li>
+          <strong>Markt- &amp; Bestseller-Check:</strong> Wir analysieren die meistgefragten Modelle
+          auf großen Handelsplattformen sowie bewährte Preis-Leistungs-Alternativen.
+        </li>
+        <li>
+          <strong>Transparente Auszeichnungen:</strong> Wir trennen klar zwischen
+          <em>Testsieger</em> (beste Gesamtleistung), <em>Preis-Leistungs-Sieger</em> und
+          <em>Spar-Tipp</em>, damit jedes Budget eine passende Empfehlung findet.
+        </li>
+      </ul>
+
+      <h2>Wie finanziert sich dieses Portal?</h2>
+      <p>
+        Alle Ratgeber und Vergleichstabellen auf {SITE_CONFIG.name} sind kostenlos nutzbar. Wenn du
+        über einen mit <strong>*</strong> markierten Partnerlink einkaufst, erhalten wir vom
+        jeweiligen Händler (z. B. Amazon.de) eine Verkaufsprovision. Diese beeinflusst unsere
+        Bewertung nicht und erhöht für dich den Kaufpreis um keinen Cent.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

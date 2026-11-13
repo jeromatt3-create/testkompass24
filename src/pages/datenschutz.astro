@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_CONFIG } from '../config/site.config.mjs';
+---
+
+<BaseLayout title={`Datenschutzerklärung | ${SITE_CONFIG.name}`}>
+  <div class="container article-layout">
+    <div class="prose">
+      <h1>Datenschutzerklärung</h1>
+      <p>
+        Der Schutz deiner persönlichen Daten ist uns ein wichtiges Anliegen. Nachfolgend informieren
+        wir dich über die Verarbeitung personenbezogener Daten beim Besuch dieser Website.
+      </p>
+
+      <h2>1. Verantwortliche Stelle</h2>
+      <p>
+        Verantwortlich für die Datenverarbeitung auf dieser Website ist der im Impressum genannte
+        Betreiber (Jeronimo Mattmüller, Herbartstr. 1, 04318 Leipzig, E-Mail: jeromatt3@gmail.com).
+      </p>
+
+      <h2>2. Hosting &amp; Server-Logfiles</h2>
+      <p>
+        Diese Website wird als statische Seite über einen externen Hosting-Anbieter (z. B. GitHub Pages,
+        Cloudflare Pages oder Firebase Hosting) bereitgestellt. Beim Aufruf der Seite erfasst der
+        Hosting-Anbieter automatisch technisch notwendige Verbindungsdaten (IP-Adresse, Datum/Uhrzeit,
+        Browsertyp), um die Auslieferung und Sicherheit der Website zu gewährleisten (Art. 6 Abs. 1 lit. f DSGVO).
+      </p>
+
+      <h2>3. Amazon Partnerprogramm (Affiliate-Links)</h2>
+      <p>
+        Wir nehmen am Partnerprogramm von Amazon EU S.à r.l., 38 avenue John F. Kennedy, L-1855
+        Luxemburg, teil. Wenn du auf einen mit * markierten Affiliate-Link klickst, wirst du zu
+        Amazon.de weitergeleitet. Amazon setzt ggf. Cookies, um die Herkunft der Bestellung
+        nachvollziehen zu können. Weitere Informationen zur Datennutzung durch Amazon findest du
+        in der Datenschutzerklärung von Amazon.de.
+      </p>
+
+      <h2>4. Deine Rechte</h2>
+      <p>
+        Du hast im Rahmen der DSGVO jederzeit das Recht auf Auskunft, Berichtigung, Löschung sowie
+        Einschränkung der Verarbeitung deiner gespeicherten personenbezogenen Daten.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
