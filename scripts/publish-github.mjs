@@ -108,6 +108,59 @@ function parseArgs(argv) {
   return opts;
 }
 
+async function syncCloudTopicQueue(ghBin, fullRepo) {
+  const localQueuePath = path.join(ROOT_DIR, 'src', 'config', 'topic-queue.json');
+  const remoteFile = ghApi(ghBin, `repos/${fullRepo}/contents/src/config/topic-queue.json`, {
+    allowFail: true,
+  });
+  if (!remoteFile || remoteFile.error || !remoteFile.content) {
+    return;
+  }
+
+  let remoteQueue;
+  let localQueue;
+  try {
+    const rawRemote = Buffer.from(String(remoteFile.content).replace(/\s+/g, ''), 'base64').toString('utf8');
+    remoteQueue = JSON.parse(rawRemote);
+    localQueue = JSON.parse(await fsp.readFile(localQueuePath, 'utf8'));
+  } catch {
+    return;
+  }
+  if (!Array.isArray(remoteQueue) || !Array.isArray(localQueue)) {
+    return;
+  }
+
+  const cloudPublished = new Map();
+  for (const item of remoteQueue) {
+    if (item && item.id && item.status === 'published') {
+      cloudPublished.set(item.id, item.publishedAt || new Date().toISOString());
+    }
+  }
+
+  let updated = 0;
+  const localIds = new Set();
+  const merged = localQueue.map((item) => {
+    if (item?.id) localIds.add(item.id);
+    if (item?.id && cloudPublished.has(item.id) && item.status !== 'published') {
+      updated++;
+      return { ...item, status: 'published', publishedAt: cloudPublished.get(item.id) };
+    }
+    return item;
+  });
+
+  for (const item of remoteQueue) {
+    if (item?.id && !localIds.has(item.id)) {
+      merged.push(item);
+      updated++;
+    }
+  }
+
+  if (updated > 0) {
+    await fsp.writeFile(localQueuePath, `${JSON.stringify(merged, null, 2)}\n`, 'utf8');
+    console.log(`🔄 Cloud-Queue synchronisiert (${updated} Einträge übernommen).`);
+  }
+}
+
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   const files = await collectWorkspaceFiles();
@@ -196,7 +249,8 @@ async function main() {
   }
   console.log('🌐 GitHub Pages (Build via GitHub Actions) aktiviert.');
 
-  // 6. Dateien als Git Tree hochladen & main-Branch aktualisieren (löst deploy-pages.yml automatisch aus)
+  // 6. Cloud-Queue abgleichen & Dateien als Git Tree hochladen (löst deploy-pages.yml automatisch aus)
+  await syncCloudTopicQueue(ghBin, fullRepo);
   console.log(`⬆️ Lade ${files.length} Projektdateien nach ${fullRepo} hoch...`);
   const tree = [];
   for (const file of files) {
