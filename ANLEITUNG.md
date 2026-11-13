@@ -66,10 +66,27 @@ Amazon PartnerNet ist der einfachste und zuverlässigste Einstieg ins Affiliate-
 ## 4. Autonomen Cloud-Workflow starten & steuern
 
 ### Vollautomatischer Zeitplan
-Die Datei `.github/workflows/autonomous-affiliate.yml` startet automatisch jeden **Montag, Mittwoch und Freitag um 07:00 UTC**:
-1. Gemini durchsucht aktuelle Markttrends in Deutschland (oder wählt das nächste Thema aus `src/config/topic-queue.json`).
+Die Datei `.github/workflows/autonomous-affiliate.yml` startet automatisch **täglich um 07:00 UTC (08:00/09:00 MEZ)**:
+1. Gemini durchsucht aktuelle Long-Tail- und Vergleichs-Trends in Deutschland (oder wählt das nächste Thema aus `src/config/topic-queue.json`).
 2. Gemini schreibt einen neuen SEO-Vergleich mit 4–5 realen Amazon-Produkten, Vor-/Nachteilen, Preisen und FAQs.
-3. Der neue Artikel wird automatisch ins Repository gespeichert, neu gebaut und auf GitHub Pages veröffentlicht.
+3. Automatisch werden ein Hero-Bild (`.svg`) **und ein vertikaler 1000×1500 Pinterest-Pin (`.png`)** erzeugt.
+4. Der neue Artikel wird automatisch ins Repository gespeichert, neu gebaut, auf GitHub Pages veröffentlicht und sofort per **IndexNow** an Suchmaschinen gemeldet.
+
+---
+
+## 5. Automatisierte Traffic-Kanäle (SEO, IndexNow & Pinterest)
+
+1. **Interne Verlinkung & RSS-Feed (`/rss.xml`):**
+   - Unter jedem Artikel werden automatisch bis zu 3 passende Vergleiche verlinkt (`RelatedArticles.astro`).
+   - Der reguläre RSS-Feed liegt unter `https://jeromatt3-create.github.io/testkompass24/rss.xml`.
+2. **IndexNow Sofort-Indexierung (Bing, DuckDuckGo, Ecosia, Yandex & ChatGPT Search):**
+   - Nach jedem automatischen Deployment meldet `scripts/ping-indexnow.mjs` alle Artikel- und Kategorieseiten direkt über `https://api.indexnow.org/indexnow` (Verifizierung über `public/b4e8f2a9c1d34e5f8a7b6c5d4e3f2a1b.txt`).
+   - Manueller Auslöser lokal: `npm run indexnow`
+3. **Pinterest RSS Auto-Publish (`/pinterest-rss.xml`):**
+   - Jeder Artikel bekommt automatisch eine vertikale `1000×1500`-Pin-Grafik unter `/images/pins/<slug>.png`.
+   - Lege optional einen kostenlosen **Pinterest-Business-Account** an, gehe in den Einstellungen auf **RSS-Feed verbinden (Claim / Auto-Publish)** und trage diese Feed-URL ein:
+     `https://jeromatt3-create.github.io/testkompass24/pinterest-rss.xml`
+   - Pinterest veröffentlicht danach jeden neuen Vergleich automatisch als fertigen Pin inkl. Link zum Artikel!
 
 ### Manuell über GitHub (1 Klick)
 Gehe auf GitHub auf **Actions → Autonomer Affiliate Content-Workflow → Run workflow**. Dort kannst du optional auch direkt ein Wunsch-Thema (`topic`), eine Kategorie oder die Anzahl (`count`) angeben.

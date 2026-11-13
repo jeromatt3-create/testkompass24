@@ -2,8 +2,8 @@ name: Autonomer Affiliate Content-Workflow
 
 on:
   schedule:
-    # Läuft jeden Montag, Mittwoch und Freitag um 07:00 UTC (08:00/09:00 MEZ)
-    - cron: '0 7 * * 1,3,5'
+    # Läuft täglich um 07:00 UTC (08:00/09:00 MEZ)
+    - cron: '0 7 * * *'
   workflow_dispatch:
     inputs:
       topic:
@@ -80,7 +80,7 @@ jobs:
         run: |
           git config user.name "Affiliate-Bot"
           git config user.email "affiliate-bot@users.noreply.github.com"
-          git add src/content/articles/ public/images/articles/ src/config/topic-queue.json
+          git add src/content/articles/ public/images/articles/ public/images/pins/ src/config/topic-queue.json
           if git diff --staged --quiet; then
             echo "Keine neuen Artikeländerungen."
           else
@@ -108,3 +108,9 @@ jobs:
       - name: Auf GitHub Pages veröffentlichen
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Suchmaschinen per IndexNow benachrichtigen
+        env:
+          SITE_URL: ${{ vars.SITE_URL || steps.pages.outputs.origin }}
+          BASE_PATH: ${{ vars.BASE_PATH || steps.pages.outputs.base_path || '/' }}
+        run: node scripts/ping-indexnow.mjs

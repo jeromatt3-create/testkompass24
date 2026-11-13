@@ -148,7 +148,7 @@ Du bist ein erfahrener SEO- und Affiliate-Marketing-Stratege für den deutschen 
 Aktuelles Datum/Saison: ${currentMonth}.
 
 AUFGABE:
-Identifiziere GENAU EIN aktuell stark nachgefragtes Produktvergleichs-Thema für Deutschland mit hoher Kaufabsicht (Affiliate-Potenzial auf Amazon.de), das noch NICHT existiert.
+Identifiziere GENAU EIN aktuell stark nachgefragtes Produktvergleichs-Thema für Deutschland mit sehr hoher Kaufabsicht (Affiliate-Potenzial auf Amazon.de) und idealerweise spitzem Long-Tail-Fokus (z. B. "unter X Euro", konkreter Anwendungsfall wie "für kleine Wohnungen / 1–2 Personen / Tierhaare / Homeoffice" oder ein direktes "Modell A vs. Modell B"-Duell), das noch NICHT existiert.
 
 Bereits veröffentlichte Artikel (NIEMALS wiederholen oder stark überlappen):
 ${existing.map((e) => `- ${e.title} (${e.slug})`).join('\n')}
@@ -157,13 +157,13 @@ Erlaubte Kategorien:
 ${allowedCategoriesText}
 ${categoryConstraint}
 
-Inspirations-Kandidaten aus unserer Themen-Queue:
+Inspirations-Kandidaten aus unserer Long-Tail-Themen-Queue:
 ${pendingQueue
   .slice(0, 8)
   .map((q) => `- [${q.id}] (${q.category}) ${q.keyword} [Saison: ${q.seasonality || 'ganzjährig'}]`)
   .join('\n')}
 
-Du darfst entweder einen starken Kandidaten aus der Queue auswählen (und dessen "queueId" angeben) ODER ein noch aktuelleres Trend-Thema aus deiner Google-Suche vorschlagen (dann "queueId": null).
+Bevorzuge kaufstarke Long-Tail-Vergleiche (Preisklassen wie "unter 150 Euro", spezifische Zielgruppen/Wohnsituationen oder gefragte "Modell A vs. Modell B"-Duelle), bei denen Google weniger von Großportalen dominiert wird. Du darfst entweder einen starken Kandidaten aus der Queue auswählen (und dessen "queueId" angeben) ODER ein noch aktuelleres Long-Tail-Trend-Thema aus deiner Google-Suche vorschlagen (dann "queueId": null).
 
 Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt in genau diesem Format:
 {

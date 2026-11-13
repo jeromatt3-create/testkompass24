@@ -9,24 +9,30 @@
 
 1. **Astro 5 Vergleichsportal (`src/`):**
    - Zentrale Konfiguration (`src/config/site.config.mjs`) und Affiliate-Link-Engine (`src/utils/affiliate.js`) für `www.amazon.de`
-   - UI-Komponenten: `BaseLayout.astro`, `ComparisonTable.astro`, `ProductCard.astro`, `FaqSection.astro`, `AffiliateNotice.astro`
-   - Seiten: Startseite, Artikelseiten, 5 Kategorieseiten, `ueber-uns.astro`, `impressum.astro`, `datenschutz.astro`
-   - **6 veröffentlichte Artikel** in `src/content/articles/` (alle 5 Kategorien gefüllt):
+   - UI-Komponenten: `BaseLayout.astro`, `ComparisonTable.astro`, `ProductCard.astro`, `FaqSection.astro`, `AffiliateNotice.astro`, `RelatedArticles.astro`
+   - Seiten & Feeds: Startseite, Artikelseiten (inkl. interner Verlinkung), 5 Kategorieseiten, `/rss.xml`, `/pinterest-rss.xml`, `ueber-uns.astro`, `impressum.astro`, `datenschutz.astro`
+   - **10 veröffentlichte Artikel** in `src/content/articles/` (alle 5 Kategorien gefüllt, je mit `.svg` Hero-Bild und `1000x1500` `.png` Pinterest-Pin):
      1. `beste-heissluftfritteusen-vergleich.md`
      2. `bluetooth-kopfhoerer-noise-cancelling-vergleich.md`
      3. `saugroboter-mit-wischfunktion-vergleich.md`
      4. `kaffeevollautomat-unter-500-euro-vergleich.md` *(live durch Gemini + Google Search Grounding generiert)*
      5. `beste-powerbank-20000mah-usb-c-vergleich.md` *(live durch Gemini + Google Search Grounding generiert)*
      6. `walking-pad-laufband-vergleich.md` *(live durch Gemini + Google Search Grounding generiert)*
+     7. `akku-staubsauger-tierhaare-vergleich.md` *(autonom in GitHub Actions generiert)*
+     8. `gan-usb-c-ladegeraet-65w-100w-vergleich.md` *(live durch Gemini + Google Search Grounding generiert)*
+     9. `roborock-qrevo-s-vs-dreame-l10s-ultra-gen-2.md` *(live durch Gemini + Google Search Grounding generiert)*
+     10. `smarte-heizkoerperthermostate-ohne-abo-test.md` *(live durch Gemini + Google Search Grounding generiert)*
 
 2. **Autonome Gemini-Pipeline (`scripts/`):**
    - `.env` ist mit aktivem `GEMINI_API_KEY` angelegt (durch `.gitignore` geschützt).
-   - Standardmodell auf `gemini-flash-latest` (inkl. 404-Fallback & Google Search Grounding) konfiguriert.
-   - `npm run build` (15 Seiten + `dist/sitemap-index.xml`) erfolgreich durchgelaufen.
+   - Standardmodell auf `gemini-flash-latest` (inkl. 404-Fallback & Google Search Grounding) konfiguriert, geschärft auf kaufstarke Long-Tail- und „VS"-Vergleiche.
+   - `scripts/generate-pins.mjs` (`npm run pins`): Generiert vertikale `1000x1500` `.png` Pinterest-Infografik-Pins via `sharp`.
+   - `scripts/ping-indexnow.mjs` (`npm run indexnow`): Sendet neue URLs direkt per IndexNow (`public/b4e8f2a9c1d34e5f8a7b6c5d4e3f2a1b.txt`) an Bing, DuckDuckGo, Ecosia & Yandex.
+   - `npm run build` (19 Seiten/Endpunkte + `dist/sitemap-index.xml`) erfolgreich durchgelaufen.
    - `scripts/publish-github.mjs` (`npm run publish:github`) für den automatischen Upload via GitHub CLI (`gh`) eingerichtet.
 
 3. **Cloud-Workflows (`.github/workflows/` & `cloud/`):**
-   - `autonomous-affiliate.yml` (Cron Mo/Mi/Fr + manueller Trigger)
+   - `autonomous-affiliate.yml` (**täglich 07:00 UTC** + manueller Trigger + automatischer IndexNow-Ping)
    - `deploy-pages.yml` (Automatisches Deployment auf GitHub Pages)
    - `cloud/Dockerfile` & `cloud/setup-gcp-scheduler.md` (optional für Google Cloud Run / Scheduler)
 

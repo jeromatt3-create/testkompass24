@@ -5,6 +5,7 @@ import AffiliateNotice from '../../components/AffiliateNotice.astro';
 import ComparisonTable from '../../components/ComparisonTable.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import FaqSection from '../../components/FaqSection.astro';
+import RelatedArticles from '../../components/RelatedArticles.astro';
 import { getCategoryBySlug } from '../../config/site.config.mjs';
 import { withBase } from '../../utils/url.js';
 
@@ -133,5 +134,7 @@ if (entry.data.faqs && entry.data.faqs.length > 0) {
     </section>
 
     <FaqSection faqs={entry.data.faqs || []} />
+
+    <RelatedArticles currentSlug={entry.id} categorySlug={entry.data.category} />
   </div>
 </BaseLayout>

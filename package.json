@@ -11,6 +11,8 @@
     "pipeline": "node scripts/run-pipeline.mjs",
     "discover": "node scripts/discover-trends.mjs",
     "generate": "node scripts/generate-article.mjs",
+    "pins": "node scripts/generate-pins.mjs",
+    "indexnow": "node scripts/ping-indexnow.mjs",
     "publish:github": "node scripts/publish-github.mjs"
   },
   "dependencies": {

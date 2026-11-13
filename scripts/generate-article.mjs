@@ -5,6 +5,7 @@ import 'dotenv/config';
 import { getCategoryBySlug } from '../src/config/site.config.mjs';
 import { generateWithGemini, hasGeminiCredentials } from './gemini-client.mjs';
 import { slugifyGerman } from './discover-trends.mjs';
+import { generatePinImage } from './generate-pins.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -321,8 +322,15 @@ export async function generateArticle({
     buildArticleHeroSvg({ title: finalTitle, categorySlug: topicObj.category }),
     'utf8'
   );
+  const pinResult = await generatePinImage({
+    slug: topicObj.slug,
+    title: finalTitle,
+    categorySlug: topicObj.category,
+    products,
+  });
 
   console.log(`✅ Artikel gespeichert: ${articlePath}`);
+  console.log(`📌 Pinterest-Pin gespeichert: ${pinResult.pinAbsPath}`);
   console.log(
     `📊 Tokens: ${response.usage.totalTokens} | Geschätzte Kosten: ~${response.usage.estimatedEur.toFixed(5)} € | Search Grounding: ${response.groundingUsed ? 'aktiv' : 'aus'}`
   );
@@ -334,6 +342,7 @@ export async function generateArticle({
     category: topicObj.category,
     articlePath,
     imageAbsPath,
+    pinAbsPath: pinResult.pinAbsPath,
     usage: response.usage,
     groundingUsed: response.groundingUsed,
     productCount: products.length,

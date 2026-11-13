@@ -38,6 +38,7 @@ const currentYear = new Date().getFullYear();
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="Uf2lHW3LjFL_EGpiLy0OnUcqCOCNaCu7-rQJLI5F1lU" />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="alternate" type="application/rss+xml" title={SITE_CONFIG.name} href={withBase('/rss.xml')} />
     {
       jsonLd && (
         <script
@@ -106,6 +107,8 @@ const currentYear = new Date().getFullYear();
               <li><a href={withBase('/ueber-uns/')}>Über uns & Methodik</a></li>
               <li><a href={withBase('/impressum/')}>Impressum</a></li>
               <li><a href={withBase('/datenschutz/')}>Datenschutz</a></li>
+              <li><a href={withBase('/rss.xml')}>RSS-Feed</a></li>
+              <li><a href={withBase('/pinterest-rss.xml')}>Pinterest-Feed</a></li>
             </ul>
           </div>
         </div>

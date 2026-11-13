@@ -1,5 +1,54 @@
 [
   {
+    "id": "heissluftfritteuse-2-personen-kompakt",
+    "category": "haushalt-kueche",
+    "keyword": "Beste Heißluftfritteuse für 1–2 Personen kompakt im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "in-ear-kopfhoerer-anc-vergleich",
+    "category": "gaming-audio",
+    "keyword": "Beste In-Ear Bluetooth Kopfhörer mit ANC unter 150 Euro",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "balkonkraftwerk-800w-komplettset",
+    "category": "smart-home",
+    "keyword": "Balkonkraftwerk 800W Komplettset mit Wechselrichter im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "saugroboter-flach-unter-8cm",
+    "category": "smart-home",
+    "keyword": "Flacher Saugroboter unter 8 cm Höhe für niedrige Möbel im Vergleich",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "espressomaschine-siebtraeger-unter-400-euro",
+    "category": "haushalt-kueche",
+    "keyword": "Beste Siebträgermaschine mit Mahlwerk für Einsteiger unter 500 Euro",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "pending"
+  },
+  {
+    "id": "roborock-qrevo-s-vs-dreame-l10s-ultra-gen-2",
+    "category": "smart-home",
+    "keyword": "Roborock Qrevo S vs. Dreame L10s Ultra Gen 2 im direkten Duell",
+    "intent": "commercial",
+    "seasonality": "ganzjährig",
+    "status": "published",
+    "publishedAt": "2026-11-13T22:12:49.399Z"
+  },
+  {
     "id": "powerbank-usb-c-schnellladen",
     "category": "tech-gadgets",
     "keyword": "Beste Powerbank mit USB-C Schnellladen 20000 mAh Vergleich",
@@ -14,7 +63,8 @@
     "keyword": "GaN USB-C Ladegerät 65W bis 100W Vergleich für Laptop & Smartphone",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-13T22:11:27.556Z"
   },
   {
     "id": "externe-ssd-festplatte-usb-c",
@@ -35,7 +85,7 @@
   {
     "id": "webcam-homeoffice-4k",
     "category": "tech-gadgets",
-    "keyword": "Beste Webcam für Homeoffice & Streaming im Vergleich",
+    "keyword": "Beste Webcam für Homeoffice & Streaming unter 150 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -43,7 +93,7 @@
   {
     "id": "wlan-mesh-system-vergleich",
     "category": "tech-gadgets",
-    "keyword": "WLAN Mesh System Vergleich für große Wohnungen & Häuser",
+    "keyword": "WLAN Mesh System Vergleich für große Wohnungen & dicke Wände",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -67,9 +117,9 @@
     "publishedAt": "2026-11-13T21:48:27.645Z"
   },
   {
-    "id": "siebtraegermaschine-einsteiger",
+    "id": "ninja-foodi-max-vs-philips-airfryer-xxl",
     "category": "haushalt-kueche",
-    "keyword": "Siebträgermaschine für Einsteiger mit Mahlwerk im Vergleich",
+    "keyword": "Ninja Foodi Max Dual Zone vs. Philips Airfryer XXL im Vergleich",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -85,7 +135,7 @@
   {
     "id": "standmixer-smoothie-maker",
     "category": "haushalt-kueche",
-    "keyword": "Hochleistungs-Standmixer & Smoothie Maker im Vergleich",
+    "keyword": "Hochleistungs-Standmixer & Smoothie Maker unter 200 Euro im Vergleich",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -101,10 +151,11 @@
   {
     "id": "smarte-heizkoerperthermostate",
     "category": "smart-home",
-    "keyword": "Smarte Heizkörperthermostate im Vergleich (Heizkosten sparen)",
+    "keyword": "Smarte Heizkörperthermostate ohne Abo im Vergleich (Heizkosten sparen)",
     "intent": "commercial",
     "seasonality": "Herbst/Winter",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-13T22:13:00.000Z"
   },
   {
     "id": "ueberwachungskamera-aussen-akku",
@@ -117,7 +168,7 @@
   {
     "id": "luftreiniger-allergiker-hepa",
     "category": "smart-home",
-    "keyword": "Luftreiniger für Allergiker mit HEPA-Filter im Vergleich",
+    "keyword": "Luftreiniger für Allergiker mit HEPA-Filter für Schlafzimmer im Vergleich",
     "intent": "commercial",
     "seasonality": "Frühling/ganzjährig",
     "status": "pending"
@@ -131,25 +182,9 @@
     "status": "pending"
   },
   {
-    "id": "balkonkraftwerk-speicher-komplettset",
-    "category": "smart-home",
-    "keyword": "Balkonkraftwerk 800W Komplettset mit Mikrowechselrichter Vergleich",
-    "intent": "commercial",
-    "seasonality": "Frühling/Sommer",
-    "status": "pending"
-  },
-  {
-    "id": "in-ear-kopfhoerer-anc-vergleich",
-    "category": "gaming-audio",
-    "keyword": "Beste In-Ear Bluetooth Kopfhörer mit ANC unter 150 Euro",
-    "intent": "commercial",
-    "seasonality": "ganzjährig",
-    "status": "pending"
-  },
-  {
     "id": "gaming-monitor-27-zoll-wqhd",
     "category": "gaming-audio",
-    "keyword": "27 Zoll WQHD Gaming-Monitor 144Hz+ Preis-Leistungs-Vergleich",
+    "keyword": "27 Zoll WQHD Gaming-Monitor 144Hz+ Preis-Leistungs-Vergleich unter 350 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -157,7 +192,7 @@
   {
     "id": "usb-mikrofon-podcast-streaming",
     "category": "gaming-audio",
-    "keyword": "Bestes USB-Mikrofon für Podcast, Homeoffice & Gaming im Vergleich",
+    "keyword": "Bestes USB-Mikrofon für Podcast, Homeoffice & Gaming unter 150 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -173,7 +208,7 @@
   {
     "id": "mechanische-gaming-tastatur",
     "category": "gaming-audio",
-    "keyword": "Mechanische Tastatur kabellos für Gaming & Büro im Vergleich",
+    "keyword": "Leise mechanische Tastatur kabellos für Gaming & Büro im Vergleich",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"
@@ -189,7 +224,7 @@
   {
     "id": "massagepistole-regeneration-vergleich",
     "category": "outdoor-fitness",
-    "keyword": "Beste Massagepistole für Nacken & Sport-Regeneration im Vergleich",
+    "keyword": "Beste Massagepistole für Nacken & Sport-Regeneration unter 150 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
     "status": "pending"

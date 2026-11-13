@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import { getCategoryBySlug } from '../config/site.config.mjs';
+import { withBase } from '../utils/url.js';
+
+interface Props {
+  currentSlug: string;
+  categorySlug: string;
+}
+
+const { currentSlug, categorySlug } = Astro.props;
+
+const allArticles = await getCollection('articles');
+const relatedArticles = allArticles
+  .filter((entry) => entry.id !== currentSlug)
+  .sort((a, b) => {
+    const aSameCat = a.data.category === categorySlug ? 1 : 0;
+    const bSameCat = b.data.category === categorySlug ? 1 : 0;
+    if (aSameCat !== bSameCat) return bSameCat - aSameCat;
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  })
+  .slice(0, 3);
+---
+
+{
+  relatedArticles.length > 0 && (
+    <section
+      class="related-articles"
+      style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border);"
+    >
+      <div class="section-header" style="margin-bottom: 1.25rem;">
+        <h2 style="font-size: 1.45rem;">Weitere passende Vergleiche &amp; Tests</h2>
+      </div>
+
+      <div
+        class="articles-grid"
+        style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));"
+      >
+        {
+          relatedArticles.map((item) => {
+            const category = getCategoryBySlug(item.data.category);
+            return (
+              <article class="article-card">
+                <a href={withBase(`/artikel/${item.id}/`)} class="article-card-media">
+                  {item.data.heroImage ? (
+                    <img
+                      src={withBase(item.data.heroImage)}
+                      alt={item.data.title}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2.5rem;">
+                      {category.icon}
+                    </div>
+                  )}
+                </a>
+                <div class="article-card-body">
+                  <div class="article-meta-row">
+                    <span class="cat-tag">
+                      {category.icon} {category.name}
+                    </span>
+                  </div>
+                  <h3 style="font-size: 1.05rem;">
+                    <a href={withBase(`/artikel/${item.id}/`)}>{item.data.title}</a>
+                  </h3>
+                  <p style="font-size: 0.88rem;">{item.data.description}</p>
+                  <div class="article-card-footer">
+                    <span>{item.data.products.length} Modelle</span>
+                    <a href={withBase(`/artikel/${item.id}/`)}>Vergleich lesen →</a>
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+  )
+}
