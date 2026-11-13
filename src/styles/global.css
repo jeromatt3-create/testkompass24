@@ -736,6 +736,30 @@ a:hover {
   font-size: 0.95rem;
 }
 
+.keyword-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.keyword-pill {
+  display: inline-block;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.3rem 0.68rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+a.keyword-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  text-decoration: none;
+}
+
 /* Footer */
 .site-footer {
   background: #0f172a;
@@ -746,7 +770,7 @@ a:hover {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
   margin-bottom: 2rem;
 }

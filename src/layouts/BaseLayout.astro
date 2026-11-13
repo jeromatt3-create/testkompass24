@@ -7,6 +7,8 @@ interface Props {
   title?: string;
   description?: string;
   canonicalPath?: string;
+  image?: string;
+  keywords?: string[];
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
@@ -14,12 +16,23 @@ const {
   title = `${SITE_CONFIG.name} – ${SITE_CONFIG.tagline}`,
   description = SITE_CONFIG.description,
   canonicalPath = Astro.url.pathname,
+  image,
+  keywords = [],
   jsonLd,
 } = Astro.props;
 
 const categories = getCategoryList();
 const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/+$/, '') : '';
 const canonicalUrl = siteOrigin ? `${siteOrigin}${canonicalPath}` : canonicalPath;
+const publicOrigin =
+  siteOrigin && !siteOrigin.includes('dein-') && !siteOrigin.includes('localhost')
+    ? siteOrigin
+    : 'https://jeromatt3-create.github.io';
+const resolvedOgImage = image
+  ? image.startsWith('http')
+    ? image
+    : `${publicOrigin}${withBase(image)}`
+  : `${publicOrigin}${withBase('/favicon.svg')}`;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -30,12 +43,18 @@ const currentYear = new Date().getFullYear();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOgImage} />
     <meta property="og:locale" content="de_DE" />
-    <meta name="robots" content="index, follow" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="google-site-verification" content="Uf2lHW3LjFL_EGpiLy0OnUcqCOCNaCu7-rQJLI5F1lU" />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
     <link rel="alternate" type="application/rss+xml" title={SITE_CONFIG.name} href={withBase('/rss.xml')} />
@@ -99,6 +118,14 @@ const currentYear = new Date().getFullYear();
                   </li>
                 ))
               }
+            </ul>
+          </div>
+          <div>
+            <h4>Unser Ratgeber-Netzwerk</h4>
+            <ul class="footer-links">
+              <li><a href="https://jeromatt3-create.github.io/alltagsrechner/">🧮 CleverRechner – Steuern &amp; Strom</a></li>
+              <li><a href="https://jeromatt3-create.github.io/feierabendkueche/">🍳 FeierabendKüche – 25-Min.-Rezepte</a></li>
+              <li><a href="https://jeromatt3-create.github.io/fehlercode-held/">🔧 FehlercodeHeld – Diagnose &amp; Hilfe</a></li>
             </ul>
           </div>
           <div>

@@ -28,6 +28,8 @@ const pubDateStr = entry.data.pubDate.toLocaleDateString('de-DE', {
   day: 'numeric',
 });
 const updatedDate = entry.data.updatedDate || entry.data.pubDate;
+const publicArticleBase = 'https://jeromatt3-create.github.io/testkompass24';
+const pinImageUrl = `${publicArticleBase}/images/pins/${entry.id}.png`;
 
 const jsonLd: Array<Record<string, unknown>> = [
   {
@@ -35,9 +37,35 @@ const jsonLd: Array<Record<string, unknown>> = [
     '@type': 'Article',
     headline: entry.data.title,
     description: entry.data.description,
+    image: pinImageUrl,
+    keywords: (entry.data.keywords || []).join(', '),
     datePublished: entry.data.pubDate.toISOString(),
     dateModified: updatedDate.toISOString(),
     inLanguage: 'de-DE',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Startseite',
+        item: `${publicArticleBase}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: category.name,
+        item: `${publicArticleBase}/kategorie/${category.slug}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: entry.data.title,
+        item: `${publicArticleBase}/artikel/${entry.id}/`,
+      },
+    ],
   },
 ];
 
@@ -73,6 +101,8 @@ if (entry.data.faqs && entry.data.faqs.length > 0) {
 <BaseLayout
   title={entry.data.title}
   description={entry.data.description}
+  image={`/images/pins/${entry.id}.png`}
+  keywords={entry.data.keywords || []}
   jsonLd={jsonLd}
 >
   <div class="container article-layout">
@@ -134,6 +164,24 @@ if (entry.data.faqs && entry.data.faqs.length > 0) {
     </section>
 
     <FaqSection faqs={entry.data.faqs || []} />
+
+    {
+      ((entry.data.keywords && entry.data.keywords.length > 0) || sortedProducts.length > 0) && (
+        <section class="faq-section" style="margin-top: 1.5rem;" aria-label="Suchbegriffe und Problemstellungen">
+          <h2 style="font-size: 1.2rem; margin-bottom: 0.75rem;">
+            Häufig gesuchte Stichworte &amp; Problemstellungen
+          </h2>
+          <div class="keyword-cloud">
+            {(entry.data.keywords || []).map((kw) => (
+              <a href={withBase(`/kategorie/${category.slug}/`)} class="keyword-pill">{kw}</a>
+            ))}
+            {sortedProducts.map((p) => (
+              <span class="keyword-pill">{p.name}</span>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <RelatedArticles currentSlug={entry.id} categorySlug={entry.data.category} />
   </div>

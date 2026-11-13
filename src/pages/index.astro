@@ -214,4 +214,26 @@ const topPicks = articles
       </div>
     </div>
   </section>
+
+  <section class="section" style="background: var(--surface-alt); border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 1rem;">
+        <h2>Beliebte Suchanfragen &amp; Kaufberatungen im Schnellzugriff</h2>
+      </div>
+      <div class="keyword-cloud">
+        {
+          articles.flatMap((article) =>
+            (article.data.keywords || []).map((kw) => ({
+              kw,
+              slug: article.id,
+            }))
+          ).map((item) => (
+            <a href={withBase(`/artikel/${item.slug}/`)} class="keyword-pill">
+              {item.kw}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </BaseLayout>

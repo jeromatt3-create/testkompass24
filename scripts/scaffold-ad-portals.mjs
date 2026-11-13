@@ -631,9 +631,23 @@ a:hover { text-decoration: underline; }
 .faq-item[open] summary::after { content: '−'; }
 .faq-item p { margin: 0.6rem 0 0; color: var(--text-muted); font-size: 0.94rem; }
 
+.keyword-cloud { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.keyword-pill {
+  display: inline-block;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.3rem 0.68rem;
+  border-radius: 999px;
+  text-decoration: none;
+}
+a.keyword-pill:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+
 /* Footer */
 .site-footer { background: #0f172a; color: #cbd5e1; padding: 2.5rem 0 1.8rem; margin-top: 3rem; }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2rem; margin-bottom: 1.8rem; }
+.footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-bottom: 1.8rem; }
 .footer-grid h4 { color: #ffffff; margin: 0 0 0.75rem; }
 .footer-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
 .footer-links a { color: #94a3b8; font-size: 0.9rem; }
@@ -1033,9 +1047,26 @@ ${quickImport}
 const allArticles = await getCollection('articles');
 const articles = allArticles.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const categories = getCategoryList();
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE_CONFIG.name,
+  url: 'https://jeromatt3-create.github.io/${portal.slug}/',
+  description: SITE_CONFIG.description,
+  inLanguage: 'de-DE',
+};
+const indexLinks = articles.flatMap((article) => {
+  const labels = Array.from(
+    new Set([
+      ...(article.data.keywords || []),
+      ...(article.data.errorCodes || []).map((c) => \`Fehlercode \${c}\`),
+    ])
+  );
+  return labels.map((label) => ({ label, slug: article.id }));
+});
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={siteJsonLd}>
   <section class="hero">
     <div class="container hero-grid">
       <div>
@@ -1127,6 +1158,21 @@ const categories = getCategoryList();
       </div>
     </div>
   </section>
+
+  {indexLinks.length > 0 && (
+    <section class="section" style="background:var(--surface-alt);border-top:1px solid var(--border);">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:1rem;">
+          <h2>Häufig gesuchte Probleme, Rechner &amp; Themen A–Z</h2>
+        </div>
+        <div class="keyword-cloud">
+          {indexLinks.map((item) => (
+            <a href={withBase(\`/artikel/\${item.slug}/\`) } class="keyword-pill">{item.label}</a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
 ${diagFilterScript}
 `;
@@ -1202,6 +1248,9 @@ const { Content } = await render(entry);
 const category = getCategoryBySlug(entry.data.category);
 const pubDateStr = entry.data.pubDate.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
 const updatedDate = entry.data.updatedDate || entry.data.pubDate;
+const publicRoot = 'https://jeromatt3-create.github.io/${portal.slug}';
+const pinImageUrl = \`\${publicRoot}/images/pins/\${entry.id}.png\`;
+const keywordString = (entry.data.keywords || []).join(', ');
 
 const jsonLd: Array<Record<string, unknown>> = [
   {
@@ -1209,9 +1258,20 @@ const jsonLd: Array<Record<string, unknown>> = [
     '@type': 'Article',
     headline: entry.data.title,
     description: entry.data.description,
+    image: pinImageUrl,
+    keywords: keywordString,
     datePublished: entry.data.pubDate.toISOString(),
     dateModified: updatedDate.toISOString(),
     inLanguage: 'de-DE',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: \`\${publicRoot}/\` },
+      { '@type': 'ListItem', position: 2, name: category.name, item: \`\${publicRoot}/kategorie/\${category.slug}/\` },
+      { '@type': 'ListItem', position: 3, name: entry.data.title, item: \`\${publicRoot}/artikel/\${entry.id}/\` },
+    ],
   },
 ];
 
@@ -1221,6 +1281,8 @@ ${isRecipe ? `if (entry.data.ingredients && entry.data.ingredients.length > 0) {
     '@type': 'Recipe',
     name: entry.data.title,
     description: entry.data.description,
+    image: pinImageUrl,
+    keywords: keywordString,
     totalTime: 'PT' + (entry.data.prepMinutes || 20) + 'M',
     recipeYield: (entry.data.servings || 2) + ' Portionen',
     recipeIngredient: entry.data.ingredients.map((i) => i.amount + ' ' + i.unit + ' ' + i.item),
@@ -1236,6 +1298,7 @@ ${isRecipe ? `if (entry.data.ingredients && entry.data.ingredients.length > 0) {
     '@type': 'HowTo',
     name: entry.data.title,
     description: entry.data.description,
+    image: pinImageUrl,
     step: entry.data.steps.map((s) => ({
       '@type': 'HowToStep',
       position: s.step,
@@ -1258,7 +1321,7 @@ if (entry.data.faqs && entry.data.faqs.length > 0) {
 }
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} jsonLd={jsonLd}>
+<BaseLayout title={entry.data.title} description={entry.data.description} image={\`/images/pins/\${entry.id}.png\`} keywords={entry.data.keywords || []} jsonLd={jsonLd}>
   <div class="container article-layout">
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href={withBase('/')}>Startseite</a>
@@ -1300,6 +1363,23 @@ if (entry.data.faqs && entry.data.faqs.length > 0) {
     </section>
 
     <FaqSection faqs={entry.data.faqs || []} />
+
+    {((entry.data.keywords && entry.data.keywords.length > 0) || (entry.data.errorCodes && entry.data.errorCodes.length > 0) || entry.data.brands) && (
+      <section class="faq-section" style="margin-top:1.5rem;" aria-label="Suchbegriffe und behandelte Probleme">
+        <h2 style="font-size:1.2rem;margin-bottom:0.75rem;">Verwandte Suchbegriffe &amp; behandelte Probleme</h2>
+        <div class="keyword-cloud">
+          {(entry.data.keywords || []).map((kw) => (
+            <a href={withBase(\`/kategorie/\${category.slug}/\`) } class="keyword-pill">{kw}</a>
+          ))}
+          {(entry.data.errorCodes || []).map((code) => (
+            <span class="keyword-pill">Fehlercode {code}</span>
+          ))}
+          {entry.data.brands && entry.data.brands.split(',').map((b) => b.trim()).filter(Boolean).map((brand) => (
+            <span class="keyword-pill">{brand}</span>
+          ))}
+        </div>
+      </section>
+    )}
 
     <AdSlot placement="footer" />
 
@@ -1425,14 +1505,15 @@ THEMA: "\${topicObj.title}" | Keyword: "\${topicObj.targetKeyword || topicObj.ti
 AUFGABE:
 Recherchiere aktuelle, verlässliche Fakten für Deutschland (ohne Erfinden fiktiver Gesetze/Werte) und schreibe einen extrem hilfreichen deutschen Ratgeber (keine Produktwerbung, keine Affiliate-Links!).
 ${themePromptExtra}
-- "bodyMarkdown": ausführlicher, klar gegliederter Praxis-Text auf Deutsch (mind. 750–1.000 Wörter) mit ## Überschriften und Listen.
-- "faqs": 3–4 echte Nutzerfragen mit klaren Antworten.
+- "keywords": 6 bis 8 spezifische Long-Tail-Keywords (inkl. umgangssprachlicher Problem-Suchanfragen ohne Fachbegriff, so wie Nutzer bei Google tatsächlich suchen).
+- "bodyMarkdown": ausführlicher, klar gegliederter Praxis-Text auf Deutsch (mind. 750–1.000 Wörter) mit ## Überschriften und Listen. Behandle darin zwingend auch verwandte Problemvarianten, typische Fehlerquellen und umgangssprachliche Synonyme.
+- "faqs": 5 konkrete Nutzerfragen im Stil von Google „Nutzer fragen auch“ mit direkten Antworten.
 
 Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt:
 {
   "title": "Prägnanter SEO-Titel (55-75 Zeichen)",
   "description": "Überzeugende Meta-Description (130-160 Zeichen)",
-  "keywords": ["Keyword 1", "Keyword 2", "Keyword 3", "Keyword 4"],
+  "keywords": ["Keyword 1", "Umgangssprachliche Problemfrage 2", "Keyword 3", "Keyword 4", "Keyword 5", "Keyword 6"],
   "readingTime": 6,
   ${jsonShape}
   "keyTakeaways": ["Fakt 1", "Fakt 2", "Fakt 3"],
@@ -1672,10 +1753,33 @@ export function getCategoryBySlug(slug) {
 `
   );
 
+  const queuePath = path.join(portalDir, 'src', 'config', 'topic-queue.json');
+  const existingQueueStatus = new Map();
+  try {
+    const prevQueue = JSON.parse(await fs.readFile(queuePath, 'utf8'));
+    if (Array.isArray(prevQueue)) {
+      for (const item of prevQueue) {
+        if (item && item.id && item.status === 'published') {
+          existingQueueStatus.set(item.id, {
+            status: 'published',
+            publishedAt: item.publishedAt || new Date().toISOString(),
+          });
+        }
+      }
+    }
+  } catch {
+    // Keine bestehende Queue vorhanden
+  }
+
+  const mergedQueue = portal.topicQueue.map((item) => {
+    const prev = existingQueueStatus.get(item.id);
+    return prev ? { ...item, ...prev } : item;
+  });
+
   await writePortalFile(
     portalDir,
     'src/config/topic-queue.json',
-    JSON.stringify(portal.topicQueue, null, 2) + '\n'
+    JSON.stringify(mergedQueue, null, 2) + '\n'
   );
 
   await writePortalFile(
@@ -1806,6 +1910,8 @@ interface Props {
   title?: string;
   description?: string;
   canonicalPath?: string;
+  image?: string;
+  keywords?: string[];
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
 }
 
@@ -1813,12 +1919,23 @@ const {
   title = \`\${SITE_CONFIG.name} – \${SITE_CONFIG.tagline}\`,
   description = SITE_CONFIG.description,
   canonicalPath = Astro.url.pathname,
+  image,
+  keywords = [],
   jsonLd,
 } = Astro.props;
 
 const categories = getCategoryList();
 const siteOrigin = Astro.site ? Astro.site.toString().replace(/\\/+$/, '') : '';
 const canonicalUrl = siteOrigin ? \`\${siteOrigin}\${canonicalPath}\` : canonicalPath;
+const publicOrigin =
+  siteOrigin && !siteOrigin.includes('dein-') && !siteOrigin.includes('localhost')
+    ? siteOrigin
+    : 'https://jeromatt3-create.github.io';
+const resolvedOgImage = image
+  ? image.startsWith('http')
+    ? image
+    : \`\${publicOrigin}\${withBase(image)}\`
+  : \`\${publicOrigin}\${withBase('/favicon.svg')}\`;
 const currentYear = new Date().getFullYear();
 const adsenseClient = SITE_CONFIG.adsenseClientId;
 ---
@@ -1830,11 +1947,17 @@ const adsenseClient = SITE_CONFIG.adsenseClientId;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={resolvedOgImage} />
     <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="google-site-verification" content="${GSC_VERIFICATION}" />
     <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
@@ -1877,6 +2000,15 @@ const adsenseClient = SITE_CONFIG.adsenseClientId;
               {categories.map((cat) => (
                 <li><a href={withBase(\`/kategorie/\${cat.slug}/\`) }>{cat.icon} {cat.name}</a></li>
               ))}
+            </ul>
+          </div>
+          <div>
+            <h4>Unser Ratgeber-Netzwerk</h4>
+            <ul class="footer-links">
+              <li><a href="https://jeromatt3-create.github.io/testkompass24/">🛒 TestKompass24 – Produktvergleiche</a></li>
+              <li><a href="https://jeromatt3-create.github.io/alltagsrechner/">🧮 CleverRechner – Steuern &amp; Strom</a></li>
+              <li><a href="https://jeromatt3-create.github.io/feierabendkueche/">🍳 FeierabendKüche – 25-Min.-Rezepte</a></li>
+              <li><a href="https://jeromatt3-create.github.io/fehlercode-held/">🔧 FehlercodeHeld – Diagnose &amp; Hilfe</a></li>
             </ul>
           </div>
           <div>
@@ -2357,7 +2489,10 @@ export const GET: APIRoute = async ({ site }) => {
   const geminiClientSource = await fs.readFile(path.join(ROOT_DIR, 'scripts', 'gemini-client.mjs'), 'utf8');
   await writePortalFile(portalDir, 'scripts/gemini-client.mjs', geminiClientSource);
 
-  const runPipelineSource = await fs.readFile(path.join(ROOT_DIR, 'scripts', 'run-pipeline.mjs'), 'utf8');
+  const runPipelineRaw = await fs.readFile(path.join(ROOT_DIR, 'scripts', 'run-pipeline.mjs'), 'utf8');
+  const runPipelineSource = runPipelineRaw
+    .replace('Affiliate-Content-Pipeline', 'Content-Pipeline')
+    .replace('Produkte)', 'Schritte/Einträge)');
   await writePortalFile(portalDir, 'scripts/run-pipeline.mjs', runPipelineSource);
 
   await writePortalFile(

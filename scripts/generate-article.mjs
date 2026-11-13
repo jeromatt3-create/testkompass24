@@ -164,13 +164,14 @@ WICHTIGE QUALITÄTSREGELN:
 3. "searchQuery" muss der exakte Marken- und Modellname für die Suche auf Amazon.de sein (ohne Wörter wie "kaufen" oder "Test").
 4. "priceRange" im deutschen Format, z. B. "ca. 79 – 99 €".
 5. "bodyMarkdown": Schreibe eine ausführliche, praxisnahe Kaufberatung auf Deutsch (mindestens 900 bis 1.300 Wörter!) mit Markdown-Überschriften (## und ###), Listen und konkreten Kaufkriterien, typischen Fehlkäufen, Pflegetipps und einem klaren Fazit. Verwende im Fließtext KEINE veralteten Jahreszahlen, sondern fokussiere auf zeitlose technische Kriterien und aktuelle Modellstärken.
-6. "faqs": 4 hilfreiche Fragen & präzise Antworten für Käufer.
+6. "keywords": Nenne 6 bis 8 spezifische Long-Tail-Keywords (inkl. konkreter Alltagsprobleme, z. B. "Saugroboter für lange Hundehaare ohne Verheddern" oder "Kaffeevollautomat für kleine Küche leise").
+7. "faqs": 5 häufige Google-Nutzerfragen ("Nutzer fragen auch" / People Also Ask) mit präzisen, direkten Antworten für Käufer.
 
 Antworte AUSSCHLIESSLICH mit einem validen JSON-Objekt in genau dieser Struktur:
 {
   "title": "SEO-optimierter Titel (55-75 Zeichen)",
   "description": "Überzeugende Meta-Description (135-160 Zeichen)",
-  "keywords": ["Keyword 1", "Keyword 2", "Keyword 3", "Keyword 4"],
+  "keywords": ["Keyword 1", "Long-Tail-Problem 2", "Keyword 3", "Keyword 4", "Keyword 5", "Keyword 6"],
   "readingTime": 8,
   "products": [
     {
