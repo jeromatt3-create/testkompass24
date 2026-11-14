@@ -81,7 +81,8 @@
     "keyword": "E-Book-Reader Vergleich: Kindle, Kobo & Tolino im Check",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-14T17:32:29.707Z"
   },
   {
     "id": "webcam-homeoffice-4k",
