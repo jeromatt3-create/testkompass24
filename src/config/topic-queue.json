@@ -100,7 +100,8 @@
     "keyword": "WLAN Mesh System Vergleich für große Wohnungen & dicke Wände",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-16T17:59:47.535Z"
   },
   {
     "id": "kaffeevollautomat-preis-leistung",
