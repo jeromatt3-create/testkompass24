@@ -178,7 +178,8 @@
     "keyword": "Luftreiniger für Allergiker mit HEPA-Filter für Schlafzimmer im Vergleich",
     "intent": "commercial",
     "seasonality": "Frühling/ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-20T07:10:45.584Z"
   },
   {
     "id": "video-tuerklingel-ohne-abo",
