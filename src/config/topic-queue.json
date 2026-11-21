@@ -196,7 +196,8 @@
     "keyword": "27 Zoll WQHD Gaming-Monitor 144Hz+ Preis-Leistungs-Vergleich unter 350 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-21T07:02:08.233Z"
   },
   {
     "id": "usb-mikrofon-podcast-streaming",
