@@ -94,7 +94,8 @@
     "keyword": "Beste Webcam für Homeoffice & Streaming unter 150 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-23T17:57:52.939Z"
   },
   {
     "id": "wlan-mesh-system-vergleich",
