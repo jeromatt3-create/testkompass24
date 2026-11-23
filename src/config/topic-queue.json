@@ -232,7 +232,8 @@
     "keyword": "Fitness-Tracker & Sport-Smartwatch Vergleich unter 200 Euro",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-23T07:29:45.218Z"
   },
   {
     "id": "massagepistole-regeneration-vergleich",
