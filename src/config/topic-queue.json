@@ -154,7 +154,8 @@
     "keyword": "Elektrische Zahnbürste Vergleich: Schall vs. Oszillierend",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-24T07:09:45.071Z"
   },
   {
     "id": "smarte-heizkoerperthermostate",
