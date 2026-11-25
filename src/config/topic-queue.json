@@ -138,7 +138,8 @@
     "keyword": "Edelstahl Wasserkocher mit Temperatureinstellung Vergleich",
     "intent": "commercial",
     "seasonality": "ganzjährig",
-    "status": "pending"
+    "status": "published",
+    "publishedAt": "2026-11-25T07:15:00.337Z"
   },
   {
     "id": "standmixer-smoothie-maker",
